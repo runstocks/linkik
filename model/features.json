@@ -1,0 +1,1 @@
+{"numeric_features": ["Open Price", "Previous Day Close Price", "Premarket Volume", "Open Gap %", "EOD Volume"], "categorical_features": ["Ticker"], "all_features": ["Open Price", "Previous Day Close Price", "Premarket Volume", "Open Gap %", "EOD Volume", "Ticker"]}
