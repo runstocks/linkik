@@ -4,6 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "start": "node index.js",
+    "start:dev": "concurrently \"node index.js\" \"npm start --prefix client\"",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],

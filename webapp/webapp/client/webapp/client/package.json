@@ -1,0 +1,5 @@
+{
+  "dependencies": {
+    "@mantine/form": "^8.2.4"
+  }
+}
