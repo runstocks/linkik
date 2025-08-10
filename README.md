@@ -24,32 +24,29 @@ Sigue estos pasos para instalar las dependencias y ejecutar el proyecto.
 -   Python 3.x
 -   Node.js y npm
 
-### 1. Instalar Dependencias del Modelo (Python)
+### 1. Instalar Dependencias
 
-Navega a la raíz del proyecto y ejecuta el siguiente comando para instalar las librerías de Python necesarias:
+Hay tres conjuntos de dependencias que instalar:
 
+**a) Modelo de Python:**
+Navega a la raíz del proyecto y ejecuta:
 ```bash
 pip install -r model/requirements.txt
 ```
 
-### 2. Instalar Dependencias de la Aplicación Web (Node.js)
-
-Navega a la carpeta de la aplicación cliente e instala las dependencias de Node.js:
-
+**b) Backend (Node.js):**
+Desde la raíz del proyecto, ejecuta:
 ```bash
-cd webapp/client
-npm install
-cd ../..  # Vuelve a la raíz del proyecto
-```
-También instala las dependencias del backend:
-```bash
-cd webapp
-npm install
-cd .. # Vuelve a la raíz del proyecto
+npm install --prefix webapp
 ```
 
+**c) Frontend (React):**
+Desde la raíz del proyecto, ejecuta:
+```bash
+npm install --prefix webapp/client
+```
 
-### 3. Entrenar el Modelo de IA
+### 2. Entrenar el Modelo de IA
 
 Antes de poder hacer predicciones, necesitas entrenar el modelo con el dataset proporcionado. Ejecuta el script de entrenamiento desde la raíz del proyecto:
 
@@ -57,32 +54,26 @@ Antes de poder hacer predicciones, necesitas entrenar el modelo con el dataset p
 python3 model/train.py
 ```
 
-Esto creará un archivo `predictive_model.joblib` en la carpeta `/model`.
+Esto creará un archivo `predictive_model.joblib` en la carpeta `/model`. Si este archivo ya existe, será sobrescrito.
 
-### 4. Ejecutar la Aplicación
+### 3. Ejecutar la Aplicación
 
-El proyecto consta de un backend y un frontend, que deben ejecutarse en terminales separadas.
+Gracias al script de ejecución concurrente, puedes lanzar tanto el backend como el frontend con un solo comando.
 
-**En una terminal, inicia el servidor backend:**
-
-```bash
-node webapp/index.js
-```
-
-El servidor se iniciará en `http://localhost:4001`.
-
-**En otra terminal, inicia la aplicación frontend de React:**
+**Desde la raíz del proyecto, navega a la carpeta `webapp` y ejecuta:**
 
 ```bash
-cd webapp/client
-npm start
+cd webapp
+npm run start:dev
 ```
 
-Esto abrirá automáticamente una pestaña en tu navegador en `http://localhost:3000` con la interfaz de usuario, lista para hacer predicciones.
+Esto hará dos cosas:
+1.  Iniciará el servidor backend en `http://localhost:4001`.
+2.  Iniciará el servidor de desarrollo del cliente React y abrirá automáticamente una pestaña en tu navegador en `http://localhost:3000`.
 
 ## Cómo Usar la Aplicación
 
-1.  Asegúrate de que tanto el backend como el frontend estén en ejecución.
+1.  Asegúrate de que la aplicación esté en ejecución con `npm run start:dev`.
 2.  Abre tu navegador en `http://localhost:3000`.
 3.  Introduce un valor en el campo "Open Gap %" (por ejemplo, `0.15` para un 15%).
 4.  Haz clic en el botón "Predecir Recorrido Máximo (RTH Run %)".
