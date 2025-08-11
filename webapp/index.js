@@ -15,15 +15,18 @@ const predictScriptPath = path.resolve(__dirname, '..', 'model', 'predict.py');
 
 // Endpoint para realizar predicciones
 app.post('/predict', (req, res) => {
-    // Updated to use the new feature name
-    const { open_gap_perc } = req.body;
+    const features = req.body;
 
-    if (open_gap_perc === undefined || typeof open_gap_perc !== 'number') {
-        return res.status(400).json({ error: 'El campo "open_gap_perc" es requerido y debe ser un número.' });
+    // Basic validation
+    if (typeof features !== 'object' || features === null) {
+        return res.status(400).json({ error: 'Invalid input. Expected a JSON object with features.' });
     }
 
-    // Llamar al script de Python para hacer la predicción
-    const pythonProcess = spawn('python3', [predictScriptPath, open_gap_perc]);
+    // Convert the features object to a JSON string to pass as a single argument
+    const featuresJsonString = JSON.stringify(features);
+
+    // Call the Python script with the JSON string
+    const pythonProcess = spawn('python3', [predictScriptPath, featuresJsonString]);
 
     let dataToSend = '';
     let errorToSend = '';
