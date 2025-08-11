@@ -1,80 +1,94 @@
-# Proyecto de IA Predictiva para Trading v0
+# Predictive AI for Trading v1
 
-Este proyecto es una prueba de concepto (v0) para un servicio de IA que predice el comportamiento de acciones en base a datos de mercado.
+This project is a proof of concept for an AI service that predicts stock behavior based on market data. This version (v1) uses an advanced model to predict whether a stock will close "green" (up) or "red" (down) for the day.
 
-## Estructura del Proyecto
+## Project Structure
 
-El repositorio está organizado en dos componentes principales:
+The repository is organized into two main components:
 
--   `/model`: Contiene todo lo relacionado con el modelo de Machine Learning.
-    -   `dataset.csv`: El dataset utilizado para el entrenamiento.
-    -   `train.py`: Script para entrenar el modelo de IA y guardarlo.
-    -   `predict.py`: Script que carga el modelo entrenado y realiza predicciones.
-    -   `requirements.txt`: Dependencias de Python.
--   `/webapp`: Contiene la aplicación web para interactuar con el modelo.
-    -   `index.js`: El servidor backend (Node.js/Express).
-    -   `/client`: La aplicación frontend (React/Mantine).
+-   `/model`: Contains everything related to the Machine Learning model.
+    -   `dataset.csv`: The dataset used for training. **Note: The current dataset is a very small sample.**
+    -   `train.py`: A script to train the AI model and save the necessary components (pipeline and feature list).
+    -   `predict.py`: A script that loads the trained model and makes predictions.
+    -   `requirements.txt`: Python dependencies.
+-   `/webapp`: Contains the web application to interact with the model.
+    -   `index.js`: The backend server (Node.js/Express).
+    -   `/client`: The frontend application (React/Mantine).
 
-## Cómo Empezar
+## How to Get Started
 
-Sigue estos pasos para instalar las dependencias y ejecutar el proyecto.
+Follow these steps to install dependencies and run the project.
 
-### Prerrequisitos
+### Prerequisites
 
 -   Python 3.x
--   Node.js y npm
+-   Node.js and npm
 
-### 1. Instalar Dependencias
+### 1. Install Dependencies
 
-Hay tres conjuntos de dependencias que instalar:
+There are three sets of dependencies to install:
 
-**a) Modelo de Python:**
-Navega a la raíz del proyecto y ejecuta:
+**a) Python Model:**
+Navigate to the project root and run:
 ```bash
 pip install -r model/requirements.txt
 ```
 
 **b) Backend (Node.js):**
-Desde la raíz del proyecto, ejecuta:
+From the project root, run:
 ```bash
 npm install --prefix webapp
 ```
 
 **c) Frontend (React):**
-Desde la raíz del proyecto, ejecuta:
+From the project root, run:
 ```bash
 npm install --prefix webapp/client
 ```
 
-### 2. Entrenar el Modelo de IA
+### 2. Train the AI Model
 
-Antes de poder hacer predicciones, necesitas entrenar el modelo con el dataset proporcionado. Ejecuta el script de entrenamiento desde la raíz del proyecto:
+Before you can make predictions, you need to train the model with the provided dataset. Run the training script from the project root:
 
 ```bash
-python3 model/train.py
+python model/train.py
 ```
 
-Esto creará un archivo `predictive_model.joblib` en la carpeta `/model`. Si este archivo ya existe, será sobrescrito.
+This will create two files in the `/model` directory:
+-   `predictive_model.joblib`: The complete, trained model pipeline.
+-   `features.json`: A file containing the list of features the model expects.
 
-### 3. Ejecutar la Aplicación
+If these files already exist, they will be overwritten.
 
-Gracias al script de ejecución concurrente, puedes lanzar tanto el backend como el frontend con un solo comando.
+### 3. Making a Prediction (Command Line)
 
-**Desde la raíz del proyecto, navega a la carpeta `webapp` y ejecuta:**
+The prediction script now requires a JSON object containing all the necessary features.
+
+**To make a prediction, run `model/predict.py` with the JSON string as an argument:**
+
+```bash
+python model/predict.py '{"Open Price":1.33,"Previous Day Close Price":1.3,"Premarket Volume":34353,"Open Gap %":0.02,"EOD Volume":4702414,"Ticker":"AREC"}'
+```
+
+The script will output a JSON response with the prediction and confidence level:
+
+```json
+{"prediction": "green", "confidence": "0.70"}
+```
+
+### 4. Running the Web Application
+
+The web application provides a user interface for interacting with the model.
+
+**From the project root, navigate to the `webapp` folder and run:**
 
 ```bash
 cd webapp
 npm run start:dev
 ```
 
-Esto hará dos cosas:
-1.  Iniciará el servidor backend en `http://localhost:4001`.
-2.  Iniciará el servidor de desarrollo del cliente React y abrirá automáticamente una pestaña en tu navegador en `http://localhost:3000`.
+This will do two things:
+1.  Start the backend server at `http://localhost:4001`.
+2.  Start the React client's development server and automatically open a tab in your browser at `http://localhost:3000`.
 
-## Cómo Usar la Aplicación
-
-1.  Asegúrate de que la aplicación esté en ejecución con `npm run start:dev`.
-2.  Abre tu navegador en `http://localhost:3000`.
-3.  Introduce un valor en el campo "Open Gap %" (por ejemplo, `0.15` para un 15%).
-4.  Haz clic en el botón "Predecir Recorrido Máximo (RTH Run %)".
-5.  La aplicación mostrará la predicción del modelo para el máximo recorrido porcentual que se espera durante el día.
+**Note:** The web application's frontend has not yet been updated to support the new JSON-based input format. This will require changes in `/webapp/client/src/App.js` and `/webapp/index.js`.
